@@ -2,16 +2,32 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Bell, ChevronDown, Menu, Search, Settings, User } from "lucide-react";
+import { Bell, ChevronDown, Menu, Search, Settings, User, Network } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import MetricsOverview from "./dashboard/MetricsOverview";
 import CustomerJourneyWidget from "./dashboard/CustomerJourneyWidget";
 import DataTable from "./tables/DataTable";
 
 const Home = () => {
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const [selectedNetwork, setSelectedNetwork] = React.useState("all");
 
-  // Mock data for recent subscribers table
-  const recentSubscribers = [
+  // Available networks
+  const networks = [
+    { id: "all", name: "All Networks" },
+    { id: "network-1", name: "Network Alpha" },
+    { id: "network-2", name: "Network Beta" },
+    { id: "network-3", name: "Network Gamma" },
+  ];
+
+  // Mock data for recent subscribers table with network info
+  const allSubscribers = [
     {
       id: 1,
       name: "John Doe",
@@ -19,6 +35,7 @@ const Home = () => {
       status: "Connected",
       signupDate: "2023-05-15",
       zone: "North",
+      network: "network-1",
     },
     {
       id: 2,
@@ -27,6 +44,7 @@ const Home = () => {
       status: "Install Scheduled",
       signupDate: "2023-05-18",
       zone: "East",
+      network: "network-2",
     },
     {
       id: 3,
@@ -35,6 +53,7 @@ const Home = () => {
       status: "Signed Up",
       signupDate: "2023-05-20",
       zone: "West",
+      network: "network-1",
     },
     {
       id: 4,
@@ -43,6 +62,7 @@ const Home = () => {
       status: "Connected",
       signupDate: "2023-05-14",
       zone: "South",
+      network: "network-3",
     },
     {
       id: 5,
@@ -51,8 +71,31 @@ const Home = () => {
       status: "Install Scheduled",
       signupDate: "2023-05-19",
       zone: "Central",
+      network: "network-2",
     },
   ];
+
+  // Filter subscribers based on selected network
+  const recentSubscribers = selectedNetwork === "all" 
+    ? allSubscribers 
+    : allSubscribers.filter(sub => sub.network === selectedNetwork);
+
+  // Calculate metrics based on selected network
+  const getMetricsForNetwork = () => {
+    const filteredData = selectedNetwork === "all" 
+      ? allSubscribers 
+      : allSubscribers.filter(sub => sub.network === selectedNetwork);
+    
+    return {
+      totalSubscribers: filteredData.length,
+      pendingInstallations: filteredData.filter(sub => sub.status === "Install Scheduled").length,
+      devicesOnline: filteredData.filter(sub => sub.status === "Connected").length,
+      activeZones: new Set(filteredData.map(sub => sub.zone)).size,
+    };
+  };
+
+  const metrics = getMetricsForNetwork();
+  const currentNetwork = networks.find(n => n.id === selectedNetwork);
 
   // Column definitions for the recent subscribers table
   const columns = [
@@ -72,15 +115,22 @@ const Home = () => {
         {/* Company Logo */}
         <div className="p-4 border-b border-border flex items-center justify-between">
           {sidebarOpen ? (
-            <div className="font-bold text-xl">Fiber Operator</div>
+            <div className="flex items-center space-x-2">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">M</span>
+              </div>
+              <span className="font-medium text-sm">Operator Portal</span>
+            </div>
           ) : (
-            <div className="font-bold text-xl mx-auto">FO</div>
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center mx-auto">
+              <span className="text-white font-bold text-sm">M</span>
+            </div>
           )}
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="ml-auto"
+            className={`${!sidebarOpen && "hidden"}`}
           >
             <Menu className="h-5 w-5" />
           </Button>
@@ -233,7 +283,7 @@ const Home = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Top Navigation Bar */}
-        <header className="h-16 border-b border-border flex items-center justify-between px-6">
+        <header className="h-16 border-b border-border flex items-center justify-between px-6 bg-card">
           <div className="flex items-center">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -246,13 +296,37 @@ const Home = () => {
           </div>
 
           <div className="flex items-center space-x-4">
+            {/* Network Selector Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="flex items-center space-x-2">
+                  <Network className="h-4 w-4" />
+                  <span className="hidden md:inline-block">{currentNetwork?.name}</span>
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                {networks.map((network, index) => (
+                  <div key={network.id}>
+                    <DropdownMenuItem
+                      onClick={() => setSelectedNetwork(network.id)}
+                      className={selectedNetwork === network.id ? "bg-accent" : ""}
+                    >
+                      {network.name}
+                    </DropdownMenuItem>
+                    {index === 0 && <DropdownMenuSeparator />}
+                  </div>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Button variant="ghost" size="icon">
               <Bell className="h-5 w-5" />
             </Button>
             <div className="flex items-center">
               <Button variant="ghost" className="flex items-center">
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center mr-2">
-                  <User className="h-4 w-4" />
+                <div className="h-8 w-8 rounded-full bg-blue-500 ring-2 ring-blue-500 ring-offset-2 ring-offset-background flex items-center justify-center mr-2">
+                  <User className="h-4 w-4 text-white" />
                 </div>
                 <span className="hidden md:inline-block">Admin User</span>
                 <ChevronDown className="h-4 w-4 ml-2" />
@@ -266,12 +340,19 @@ const Home = () => {
           <div className="mb-6">
             <h1 className="text-2xl font-bold">Dashboard</h1>
             <p className="text-muted-foreground">
-              Welcome to the Fiber Operator Portal
+              {selectedNetwork === "all" 
+                ? "Welcome to the Fiber Operator Portal" 
+                : `Viewing ${currentNetwork?.name}`}
             </p>
           </div>
 
           {/* Metrics Overview */}
-          <MetricsOverview />
+          <MetricsOverview 
+            totalSubscribers={metrics.totalSubscribers}
+            pendingInstallations={metrics.pendingInstallations}
+            devicesOnline={metrics.devicesOnline}
+            activeZones={metrics.activeZones}
+          />
 
           {/* Customer Journey Widget */}
           <div className="mt-6">

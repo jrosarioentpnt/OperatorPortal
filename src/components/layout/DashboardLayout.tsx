@@ -66,7 +66,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-40 border-b bg-background">
+      <header className="sticky top-0 z-40 border-b bg-card">
         <div className="flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center">
             <Button
@@ -81,12 +81,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 <Menu className="h-5 w-5" />
               )}
             </Button>
-            <div className="flex items-center">
-              <div className="mr-2 h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold">F</span>
+            <div className="flex items-center space-x-2">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">M</span>
               </div>
-              <span className="hidden font-bold text-xl md:inline-block">
-                Fiber Operator Portal
+              <span className="hidden font-medium text-base md:inline-block">
+                Operator Portal
               </span>
             </div>
           </div>
@@ -109,17 +109,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center space-x-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage
-                      src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin"
-                      alt="User"
-                    />
-                    <AvatarFallback>OP</AvatarFallback>
-                  </Avatar>
+                  <div className="h-8 w-8 rounded-full bg-blue-500 ring-2 ring-blue-500 ring-offset-2 ring-offset-background flex items-center justify-center">
+                    <span className="text-white font-bold text-xs">SU</span>
+                  </div>
                   <div className="hidden md:block text-left">
                     <p className="text-sm font-medium">Admin User</p>
                     <p className="text-xs text-muted-foreground">
-                      admin@fiberco.com
+                      admin@meernat.com
                     </p>
                   </div>
                   <ChevronDown className="h-4 w-4 text-muted-foreground" />
@@ -142,7 +138,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         {/* Left Sidebar Navigation */}
         <aside
           className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-            fixed inset-y-0 left-0 z-30 w-64 transform border-r bg-background pt-16 transition-transform duration-300 md:translate-x-0 md:pt-16`}
+            fixed inset-y-0 left-0 z-30 w-64 transform border-r bg-card pt-16 transition-transform duration-300 ease-out md:translate-x-0 md:pt-16`}
         >
           <nav className="space-y-1 px-2 py-4">
             {navItems.map((item) => (

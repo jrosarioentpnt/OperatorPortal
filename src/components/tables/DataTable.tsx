@@ -208,10 +208,10 @@ const DataTable = ({
   };
 
   return (
-    <div className="w-full bg-white rounded-md shadow-sm border border-gray-200">
-      <div className="p-4 border-b border-gray-200">
+    <div className="w-full bg-card rounded-md shadow-sm border border-border">
+      <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
+          <h2 className="text-xl font-semibold text-foreground">{title}</h2>
           <div className="flex items-center space-x-2">
             {selectedRows.length > 0 && (
               <DropdownMenu>
@@ -239,7 +239,7 @@ const DataTable = ({
           </div>
         </div>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder={searchPlaceholder}
             className="pl-10"
@@ -338,9 +338,9 @@ const DataTable = ({
         </Table>
       </div>
 
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-border">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             Showing {pagination.pageIndex * pagination.pageSize + 1} to{" "}
             {Math.min(
               (pagination.pageIndex + 1) * pagination.pageSize,

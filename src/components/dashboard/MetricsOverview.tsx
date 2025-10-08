@@ -25,12 +25,12 @@ const MetricCard = ({
   description = "",
 }: MetricCardProps) => {
   return (
-    <Card className="bg-white">
+    <Card className="bg-card border-border hover:shadow-lg hover:border-primary transition-all duration-200">
       <CardContent className="p-6">
         <div className="flex justify-between items-start">
           <div>
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <h3 className="text-2xl font-bold mt-1">{value}</h3>
+            <h3 className="text-2xl font-bold mt-1 text-foreground">{value}</h3>
             {description && (
               <p className="text-xs text-muted-foreground mt-1">
                 {description}
@@ -81,7 +81,7 @@ const MetricsOverview = ({
 }: MetricsOverviewProps) => {
   return (
     <div className="w-full bg-background">
-      <h2 className="text-xl font-semibold mb-4">Overview</h2>
+      <h2 className="text-xl font-semibold mb-4 text-foreground">Overview</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           title="Total Subscribers"

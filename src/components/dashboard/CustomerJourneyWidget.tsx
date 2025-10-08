@@ -23,30 +23,30 @@ const CustomerJourneyWidget = ({
       id: "signed-up",
       name: "Signed Up",
       count: 42,
-      icon: <UserPlus className="h-5 w-5" />,
+      icon: <UserPlus className="h-5 w-5 text-white" />,
       color: "bg-blue-500",
     },
     {
       id: "scheduled",
       name: "Install Scheduled",
       count: 28,
-      icon: <Clock className="h-5 w-5" />,
+      icon: <Clock className="h-5 w-5 text-white" />,
       color: "bg-amber-500",
     },
     {
       id: "connected",
       name: "Device Connected",
       count: 16,
-      icon: <CheckCircle className="h-5 w-5" />,
+      icon: <CheckCircle className="h-5 w-5 text-white" />,
       color: "bg-green-500",
     },
   ],
   totalCustomers = 86,
 }: CustomerJourneyWidgetProps) => {
   return (
-    <Card className="w-full bg-white">
+    <Card className="w-full bg-card border-border hover:shadow-lg hover:border-primary transition-all duration-200">
       <CardHeader>
-        <CardTitle className="text-lg font-medium">
+        <CardTitle className="text-lg font-medium text-foreground">
           Customer Journey Progress
         </CardTitle>
       </CardHeader>
@@ -56,11 +56,11 @@ const CustomerJourneyWidget = ({
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Total Customers</p>
-              <p className="text-2xl font-bold">{totalCustomers}</p>
+              <p className="text-2xl font-bold text-foreground">{totalCustomers}</p>
             </div>
             <div className="text-right">
               <p className="text-sm text-muted-foreground">Fully Connected</p>
-              <p className="text-2xl font-bold">
+              <p className="text-2xl font-bold text-foreground">
                 {stages.find((stage) => stage.id === "connected")?.count || 0}
                 <span className="text-sm text-muted-foreground ml-1">
                   (
@@ -95,7 +95,7 @@ const CustomerJourneyWidget = ({
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
-                    <p className="font-medium">{stage.name}</p>
+                    <p className="font-medium text-foreground">{stage.name}</p>
                     <Badge variant="outline" className="ml-2">
                       {stage.count}
                     </Badge>
